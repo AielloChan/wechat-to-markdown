@@ -4,6 +4,12 @@ Fork from https://github.com/LuckyRyan-web/wechat-to-markdown
 
 add some bug fix
 
+```bash
+yarn add @aiello/wechat-to-markdown
+# or
+npm install @aiello/wechat-to-markdown
+```
+
 ## description
 
 Enter the WeChat public address to convert it to markdown format
@@ -31,7 +37,7 @@ interface TurnDownResult {
 ## CommonJs
 
 ```javascript
-const transformHtml2Markdown = require('@ryan-liu/wechat-to-markdown').default
+const transformHtml2Markdown = require('@aiello/wechat-to-markdown').default
 
 setTimeout(async () => {
     const articleData = await transformHtml2Markdown('https://mp.weixin.qq.com/s/9d5DWg7YdMHPvVl-2KLH2w')
@@ -47,7 +53,7 @@ setTimeout(async () => {
 ## vue3
 **index.ts**
 ```javascript
-import transformHtml2Markdown from '@ryan-liu/wechat-to-markdown'
+import transformHtml2Markdown from '@aiello/wechat-to-markdown'
 
 setup() {
     const getData = async () => {

@@ -33,7 +33,15 @@ export default async function transformHtml2Markdown(
 
             title = title.trim() || ''
 
-            const author = $('.original_primary_nickname').text()
+            const author = Array.from(
+                new Set(
+                    $('#js_name')
+                        .text()
+                        .split('\n')
+                        .map((item) => item.trim())
+                        .filter(Boolean)
+                )
+            ).join('\n')
 
             const html = $('#js_content').html()
 

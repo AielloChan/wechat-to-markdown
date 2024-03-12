@@ -1,3 +1,9 @@
+# wechat-to-markdown
+
+Fork from https://github.com/LuckyRyan-web/wechat-to-markdown
+
+add some bug fix
+
 ## description
 
 Enter the WeChat public address to convert it to markdown format

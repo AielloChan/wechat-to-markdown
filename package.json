@@ -1,8 +1,8 @@
 {
-  "name": "@ryan-liu/wechat-to-markdown",
-  "version": "1.2.2",
+  "name": "@aiello/wechat-to-markdown",
+  "version": "1.2.3",
   "description": "解析微信文章 URL 为 markdown",
-  "author": "Ryan-liu",
+  "author": "Aiello Chan<aiello.chan@gmail.com>",
   "keywords": [
     "wechat to markdown",
     "markdown"
@@ -26,13 +26,15 @@
     "lint-staged": "^11.1.2",
     "prettier": "^2.4.1",
     "tsup": "^5.4.0",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "vitest": "^1.3.1"
   },
   "scripts": {
     "dev": "yarn build --watch",
     "build": "tsup src/index.ts --dts --format cjs,esm",
     "lint": "lint-staged",
-    "pub": "node tools/publish.js"
+    "pub": "node tools/publish.js",
+    "test": "vitest"
   },
   "husky": {
     "hooks": {

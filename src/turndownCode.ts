@@ -2,7 +2,7 @@
  *  html 转换 markdown 格式
  */
 import turnDownService from 'turndown'
-import { gfm } from 'turndown-plugin-gfm'
+import TurndownPluginGfm from '@guyplusplus/turndown-plugin-gfm'
 import { formatCode, figure2markdown } from './formatHtml'
 
 interface Params {
@@ -15,7 +15,7 @@ function getTurnDownService(params: Params) {
         hr: '',
     })
 
-    turndownService.use(gfm)
+    TurndownPluginGfm.gfm(turndownService)
 
     let videoCounter = 0
 

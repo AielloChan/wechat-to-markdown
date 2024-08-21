@@ -160,6 +160,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@guyplusplus/turndown-plugin-gfm@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@guyplusplus/turndown-plugin-gfm/-/turndown-plugin-gfm-1.0.7.tgz#55c07d549a321a956a1657db1b3858f362c9c5e1"
+  integrity sha512-k2KATk491JIeq1KNsjOwaD88cdknQeTpKVXh9OuZfHdjFuSEtEVVDCfCbxzmRvJxeKDPbZQl8DGP5o7SaIvWBw==
+  dependencies:
+    turndown "^7.1.1"
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"
@@ -2522,9 +2529,9 @@ tsutils@^3.21.0:
   dependencies:
     tslib "^1.8.1"
 
-turndown-plugin-gfm@^1.0.2:
+turndown-plugin-gfm@1.0.2:
   version "1.0.2"
-  resolved "https://registry.npmjs.org/turndown-plugin-gfm/-/turndown-plugin-gfm-1.0.2.tgz#6f8678a361f35220b2bdf5619e6049add75bf1c7"
+  resolved "https://registry.yarnpkg.com/turndown-plugin-gfm/-/turndown-plugin-gfm-1.0.2.tgz#6f8678a361f35220b2bdf5619e6049add75bf1c7"
   integrity sha512-vwz9tfvF7XN/jE0dGoBei3FXWuvll78ohzCZQuOb+ZjWrs3a0XhQVomJEb2Qh4VHTPNRO4GPZh0V7VRbiWwkRg==
 
 turndown@^7.1.1:

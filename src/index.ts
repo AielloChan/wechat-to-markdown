@@ -76,3 +76,5 @@ export default async function transformHtml2Markdown(
 
     return json
 }
+
+export { getTurnDownService } from './turndownCode'

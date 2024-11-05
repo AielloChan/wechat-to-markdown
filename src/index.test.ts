@@ -70,4 +70,34 @@ describe('transformHtml2Markdown 测试', () => {
             '|   超时操作   |   日志消息描述   |   描述   |'
         )
     })
+
+    it(
+        '可以拉取过期的微信分享',
+        async () => {
+            const url =
+                'http://mp.weixin.qq.com/s?__biz=MzI2MjM4Nzc2NA==&mid=2247497160&idx=1&sn=459629d06f15de173b061403df7608ca&chksm=ebcf2b30c5dbd85cce7b8afa5da871f28c58803173431cd7b78a868f562b62c9a090a169088d&mpshare=1&scene=1&srcid=0913vXdzPliilHLt1QHe9kBz&sharer_shareinfo=651a82c9681791d6a0b315b13f9341d8&sharer_shareinfo_first=651a82c9681791d6a0b315b13f9341d8#rd'
+            const result = await transformHtml2Markdown(url)
+
+            expect(result.success).toBe(true)
+            expect(result.code).toBe(200)
+
+            console.log(result.data?.content)
+        },
+        { timeout: 10000 }
+    )
+
+    it(
+        '支持处理重定向请求',
+        async () => {
+            const url =
+                'http://mp.weixin.qq.com/s?__biz=MzkyMTU4MDIyMA==&mid=2247492071&idx=1&sn=3c7df3d85f2e1565f8996676e30bfa56&chksm=c00ea1c176df04164ebf3764c0ca9569e7247eed56fdbe80421ce7ba21dd69f386f196a97920&mpshare=1&scene=1&srcid=1105HGT51CuD1H9sPOCnHthy&sharer_shareinfo=ed87e9281606c42ed0aa2a4ed81ce1da&sharer_shareinfo_first=7c96c936611ec667238354ba45527d0a#rd'
+            const result = await transformHtml2Markdown(url)
+
+            expect(result.success).toBe(true)
+            expect(result.code).toBe(200)
+
+            console.log(result.data?.content)
+        },
+        { timeout: 10000 }
+    )
 })

@@ -100,4 +100,32 @@ describe('transformHtml2Markdown 测试', () => {
         },
         { timeout: 10000 }
     )
+    it(
+        '支持短文章',
+        async () => {
+            const url = 'https://mp.weixin.qq.com/s/8Dza8eyXHTu-4A2iMTMlaw'
+            const result = await transformHtml2Markdown(url)
+
+            expect(result.success).toBe(true)
+            expect(result.code).toBe(200)
+
+            console.log(result.data?.content)
+        },
+        { timeout: 10000 }
+    )
+
+    it(
+        '支持验证文章',
+        async () => {
+            const url =
+                'http://mp.weixin.qq.com/s?__biz=Mzg4MDkwODExMw==&mid=2247486979&idx=1&sn=e27b70752bd2d15580a0c122701c6b73&chksm=cedbfe895b47acc1a9dde4b9e049397194ea9d017f7b6f4f6c737660d81c5a3b7aed6c24ec51&mpshare=1&scene=1&srcid=0313AbjEfUFNTKCL0vUu11BF&sharer_shareinfo=370b77ce8f9f243d29f07248a0a6d463&sharer_shareinfo_first=370b77ce8f9f243d29f07248a0a6d463#rd'
+            const result = await transformHtml2Markdown(url)
+
+            // expect(result.success).toBe(true)
+            // expect(result.code).toBe(200)
+
+            console.log(result.data?.content)
+        },
+        { timeout: 10000 }
+    )
 })

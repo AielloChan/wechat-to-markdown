@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { load } from 'cheerio'
 import { errObj } from './error'
-import { TurnDownResult, Status } from './type'
+import type { TurnDownResult } from './type'
+import { Status } from './type'
 import { getTurnDownService } from './turndownCode'
 
 const getError = (code: number) => {
@@ -62,15 +63,17 @@ export default async function transformHtml2Markdown(
     u.searchParams.delete('poc_token')
 
     try {
-        const res = await axios.request({
-            url: u.href,
-            method: 'get',
+        const res = await axios.get(u.href, {
             timeout: 30000,
             maxRedirects: 5,
-            transformResponse(res) {
-                return res
+            headers: {
+                DNT: '1',
+                'Upgrade-Insecure-Requests': '1',
+                'User-Agent':
+                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
             },
         })
+
         return parseHTML(res.data, { url: u.href })
     } catch (err) {
         console.log(err)

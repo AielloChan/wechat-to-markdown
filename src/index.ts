@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { load } from 'cheerio'
 import { errObj } from './error'
 import type { TurnDownResult } from './type'
@@ -54,9 +54,20 @@ export async function parseHTML(htmlRaw: string, meta: { url: string }) {
     return getError(Status.Fail)
 }
 
+/**
+ * 支持添加代理服务器
+ */
+interface TransformHtml2MarkdownOptions {
+    axiosConfig?: AxiosRequestConfig
+}
+
 export default async function transformHtml2Markdown(
-    url: string
+    url: string,
+    options: TransformHtml2MarkdownOptions = {}
 ): Promise<TurnDownResult> {
+    const { axiosConfig = {} } = options
+    const { headers = {}, ...restConfig } = axiosConfig
+
     const u = new URL(url)
     // 移除该参数
     // 避免出现 302 跳转
@@ -71,7 +82,9 @@ export default async function transformHtml2Markdown(
                 'Upgrade-Insecure-Requests': '1',
                 'User-Agent':
                     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+                ...headers,
             },
+            ...restConfig,
         })
 
         return parseHTML(res.data, { url: u.href })

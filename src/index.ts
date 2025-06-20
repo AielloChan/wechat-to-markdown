@@ -54,6 +54,21 @@ export async function parseHTML(htmlRaw: string, meta: { url: string }) {
     return getError(Status.Fail)
 }
 
+export async function transformHtml2Markdown(
+    html: string,
+    /**
+     * 这里的 url 是原始的 url，主要是用来映射内部跳转链接
+     */
+    url: string
+): Promise<TurnDownResult> {
+    try {
+        return parseHTML(html, { url })
+    } catch (err) {
+        console.log(err)
+        return getError(Status.Fail)
+    }
+}
+
 /**
  * 支持添加代理服务器
  */
@@ -61,7 +76,7 @@ interface TransformHtml2MarkdownOptions {
     axiosConfig?: AxiosRequestConfig
 }
 
-export default async function transformHtml2Markdown(
+export async function transformUrl2Markdown(
     url: string,
     options: TransformHtml2MarkdownOptions = {}
 ): Promise<TurnDownResult> {
@@ -87,7 +102,7 @@ export default async function transformHtml2Markdown(
             ...restConfig,
         })
 
-        return parseHTML(res.data, { url: u.href })
+        return transformHtml2Markdown(res.data, url)
     } catch (err) {
         console.log(err)
         return getError(Status.Fail)

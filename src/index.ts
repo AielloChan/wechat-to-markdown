@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { load } from 'cheerio'
 import { errObj } from './error'
 import type { TurnDownResult } from './type'
 import { Status } from './type'
-import { getTurnDownService } from './turndownCode'
+import { parseWeChatPage } from './parsers/wechat'
+import { parseGeneralHTML } from './parsers/general'
 
 const getError = (code: number) => {
     return {
@@ -15,40 +15,26 @@ const getError = (code: number) => {
 
 export { TurnDownResult, Status }
 
-export async function parseHTML(htmlRaw: string, meta: { url: string }) {
-    const $ = load(htmlRaw)
+export function isWechatPage(html: string) {
+    return html?.includes('res.wx.qq.com')
+}
 
-    let title = $('#activity-name').text()
+export async function parseHTML(
+    html: string,
+    meta: { url: string }
+): Promise<TurnDownResult> {
+    let result: TurnDownResult | null = null
 
-    title = title.trim() || ''
-    const author = Array.from(
-        new Set(
-            [
-                $('meta[name="author"]')?.attr('content'),
-                ...$('#js_name').text().split('\n'),
-            ]
-                .map((item) => (item ? item.trim() : ''))
-                .filter(Boolean)
-        )
-    ).join('\n')
+    if (isWechatPage(html)) {
+        result = await parseWeChatPage(html, meta)
+    }
+    if (!result) {
+        // 兜底处理
+        result = await parseGeneralHTML(html, meta)
+    }
 
-    const htmlEl = $('#js_content')
-    const html = htmlEl.html()
-
-    if (html && html.length > 0) {
-        let res = getTurnDownService(meta).turndown(html)
-
-        res = `## ${title} \n \n` + `## 作者 ${author} \n \n` + res
-
-        return {
-            success: true,
-            code: Status.Success,
-            data: {
-                title,
-                author,
-                content: res,
-            },
-        }
+    if (result) {
+        return result
     }
 
     return getError(Status.Fail)

@@ -1,5 +1,5 @@
 import { load } from 'cheerio'
-import { JSDOM } from 'jsdom'
+import { Window } from 'happy-dom'
 import { Readability } from '@mozilla/readability'
 import { Status } from '../type'
 import { getTurnDownService } from '../turndownCode'
@@ -20,8 +20,12 @@ export async function parseGeneralHTML(htmlRaw: string, meta: { url: string }) {
 
     let html: string | null | undefined
     try {
-        const dom = new JSDOM($.html(), { url: meta.url })
-        const article = new Readability(dom.window.document).parse()
+        const window = new Window({ url: meta.url })
+        window.document.write($.html())
+        window.document.close()
+        const article = new Readability(
+            window.document as unknown as Document
+        ).parse()
         html = article?.content
     } catch {
         html = undefined
@@ -31,9 +35,7 @@ export async function parseGeneralHTML(htmlRaw: string, meta: { url: string }) {
         html = $('body').html()
     }
     if (html?.length) {
-        let res = getTurnDownService(meta).turndown(html)
-
-        res = `## ${title} \n \n` + `## 作者 ${author} \n \n` + res
+        const content = getTurnDownService(meta).turndown(html)
 
         return {
             success: true,
@@ -41,7 +43,7 @@ export async function parseGeneralHTML(htmlRaw: string, meta: { url: string }) {
             data: {
                 title,
                 author,
-                content: res,
+                content,
             },
         }
     }

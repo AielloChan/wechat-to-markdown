@@ -5,6 +5,11 @@ import { getTurnDownService } from '../turndownCode'
 export async function parseGeneralHTML(htmlRaw: string, meta: { url: string }) {
     const $ = load(htmlRaw)
     $('script').remove()
+    $('[style]')
+        .filter((_, el) =>
+            /display\s*:\s*none/i.test($(el).attr('style') || '')
+        )
+        .remove()
 
     const title = ($('title').text() || '').trim()
     const author = ($('meta[name="author"]')?.attr('content') || '').trim()

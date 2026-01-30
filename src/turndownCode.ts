@@ -3,7 +3,7 @@
  */
 import turnDownService from 'turndown'
 import TurndownPluginGfm from '@guyplusplus/turndown-plugin-gfm'
-import { formatCode, figure2markdown } from './formatHtml'
+import { formatCode } from './formatHtml'
 
 interface Params {
     url: string
@@ -42,7 +42,11 @@ function getTurnDownService(params: Params) {
         .addRule('getImage', {
             filter: ['img'],
             replacement(content, node: any) {
-                const src = node.getAttribute('data-src') || ''
+                // Prefer WeChat's data-src, but fall back to normal src (e.g. base64)
+                const src =
+                    node.getAttribute('data-src') ||
+                    node.getAttribute('src') ||
+                    ''
 
                 return src ? `\n\n![](${src}) \n\n` : ''
             },
@@ -70,13 +74,6 @@ function getTurnDownService(params: Params) {
         .addRule('lineBreaks', {
             filter: 'br',
             replacement: () => '\n',
-        })
-        .addRule('img2Code', {
-            filter: ['figure'],
-            replacement(content, node: any) {
-                const res = figure2markdown(node.innerHTML)
-                return res || ''
-            },
         })
 
     return turndownService

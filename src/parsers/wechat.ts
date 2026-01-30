@@ -1,6 +1,7 @@
 import { load } from 'cheerio'
 import { Status } from '../type'
 import { getTurnDownService } from '../turndownCode'
+import { figure2markdown } from '../formatHtml'
 
 export async function parseWeChatPage(htmlRaw: string, meta: { url: string }) {
     const $ = load(htmlRaw)
@@ -21,7 +22,16 @@ export async function parseWeChatPage(htmlRaw: string, meta: { url: string }) {
     const html = htmlEl.html()
 
     if (html?.length) {
-        let res = getTurnDownService(meta).turndown(html)
+        const service = getTurnDownService(meta)
+        service.addRule('img2Code', {
+            filter: ['figure'],
+            replacement(content, node: any) {
+                const res = figure2markdown(node.innerHTML)
+                return res || ''
+            },
+        })
+
+        let res = service.turndown(html)
 
         res = `## ${title} \n \n` + `## 作者 ${author} \n \n` + res
 
